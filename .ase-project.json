@@ -1,39 +1,61 @@
 {
-  "name": "trip",
-  "version": "1.0.0",
-  "description": "One-paragraph description of what this project does and who it serves.",
+  "name": "obsidian1",
+  "version": "0.1.0",
+  "description": "A local-first, extensible knowledge management web application inspired by Obsidian. Features bi-directional linking, knowledge graph visualization, CodeMirror 6 editor with Live Preview, and a professional 3-column workspace layout.",
   "tech_stack": [
-    "Next.js 15 (App Router)",
+    "Next.js 15 (App Router, React 19)",
     "TypeScript 5.5",
-    "PostgreSQL 16 via Drizzle ORM",
-    "Tailwind CSS v4",
+    "CodeMirror 6 (Markdown editor with Live Preview)",
+    "Tailwind CSS v4 + shadcn/ui",
+    "Zustand (reactive state management)",
+    "File System Access API + IndexedDB (Dexie.js)",
+    "MiniSearch (full-text search in Web Worker)",
+    "d3-force + react-force-graph-2d (graph visualization)",
+    "unified + remark + rehype (Markdown AST pipeline)",
+    "KaTeX (LaTeX math rendering)",
+    "Mermaid.js (diagram rendering)",
     "Vercel Deployment"
   ],
   "conventions": [
     "All components use named exports, never default exports",
-    "Database queries live exclusively in /lib/db/*.ts",
-    "API routes use Route Handlers in /app/api/**/*.ts",
-    "Zod schemas validate all external input"
+    "Core engine code lives in /src/lib/vault/*.ts",
+    "State management via Zustand stores in /src/stores/*.ts",
+    "UI primitives from shadcn/ui in /src/components/ui/*.tsx",
+    "Zod schemas validate all external input",
+    "Web Workers for CPU-intensive tasks (search indexing, graph physics)",
+    "Import aliases use @/* pointing to ./src/*"
   ],
   "architecture_patterns": [
-    "Server Components for data fetching, Client Components for interactivity only",
-    "Repository pattern for database access",
-    "Feature-based folder structure under /features"
+    "Local-first: File System Access API as primary storage, IndexedDB fallback",
+    "In-memory metadata cache with event-driven reactivity",
+    "Server Components for static shell, Client Components for interactive workspace",
+    "Feature-based component structure under /src/components/*",
+    "Separation of concerns: data layer → stores → UI components",
+    "Web Workers for off-main-thread computation"
   ],
   "file_structure": {
     "src/app": "Next.js App Router pages and layouts",
-    "src/features": "Feature modules with co-located components, hooks, and types",
-    "src/lib": "Shared utilities, database client, auth helpers",
-    "src/components/ui": "Reusable UI primitives (Button, Modal, Input)",
+    "src/app/vault": "Main workspace layout (after vault is opened)",
+    "src/components/editor": "CodeMirror 6 editor and CM6 extensions (wikilinks, live-preview, frontmatter)",
+    "src/components/file-explorer": "File tree sidebar component",
+    "src/components/graph": "Knowledge graph visualization (d3-force + WebGL)",
+    "src/components/panels": "Right sidebar panels (Backlinks, Outline, Properties)",
+    "src/components/ui": "shadcn/ui primitives (Button, Dialog, Input, Command, etc.)",
+    "src/components/workspace": "Shell components (Ribbon, Sidebars, TabBar, StatusBar, CommandPalette)",
+    "src/lib/vault": "Core engine: filesystem abstraction, metadata cache, search index",
+    "src/lib": "Shared utilities, theme definitions",
+    "src/stores": "Zustand reactive stores (Vault, Metadata, Workspace, Theme)",
+    "src/workers": "Web Workers for search indexing and graph physics",
     "tests": "Test files mirroring src/ structure"
   },
   "testing_strategy": {
     "framework": "Vitest + React Testing Library",
     "coverage_target": "80%",
     "patterns": [
-      "Unit tests for all utility functions",
-      "Integration tests for API routes",
-      "Component tests for interactive UI elements"
+      "Unit tests for vault filesystem and metadata cache",
+      "Unit tests for Zustand store logic",
+      "Component tests for editor and workspace UI",
+      "Integration tests for vault CRUD operations"
     ]
   },
   "deployment": {
@@ -45,27 +67,31 @@
       "production"
     ]
   },
-  "sprint_focus": "Building the user onboarding flow with email verification and profile setup.",
+  "sprint_focus": "Building the core MVP: CodeMirror 6 editor with wikilinks, file explorer, backlinks panel, graph view, and 3-column workspace layout.",
   "sprint_skills": [
-    "lifecycle/security-and-hardening",
+    "lifecycle/incremental-implementation",
     "lifecycle/api-and-interface-design",
     "lifecycle/test-driven-development"
   ],
   "never_do": [
-    "Never use useEffect for data fetching — use Server Components or SWR",
+    "Never use useEffect for data fetching — use Server Components or Zustand subscriptions",
     "Never store secrets in .env files committed to git",
     "Never use inline styles — always use Tailwind classes",
     "Never use `any` TypeScript type — always type explicitly",
-    "Never mix database queries into React components"
+    "Never put business logic in React components — use lib/ or stores/",
+    "Never block the main thread with heavy computation — use Web Workers",
+    "Never use default exports for components — always use named exports"
   ],
   "preferred_patterns": [
-    "Use Zod for all schema validation",
-    "Use Drizzle ORM for all database access",
-    "Use server actions for mutations",
-    "Use Next.js Image component for all images"
+    "Use Zustand for all global state management",
+    "Use CodeMirror 6 extensions for editor features",
+    "Use shadcn/ui + Radix for accessible UI primitives",
+    "Use Web Workers for search indexing and graph physics",
+    "Use unified/remark/rehype for Markdown processing",
+    "Use Dexie.js for IndexedDB interactions"
   ],
   "agent_skills": {
-    "directory": "/home/thor/skiils",
+    "directory": "/home/thor/skills",
     "default_skills": [
       "lifecycle/using-agent-skills",
       "lifecycle/context-engineering"

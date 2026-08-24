@@ -1,0 +1,110 @@
+@import "tailwindcss";
+
+@theme {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+}
+
+@layer base {
+  :root {
+    --background: #000000;
+    --foreground: #ffffff;
+    --card: #121212;
+    --card-foreground: #ffffff;
+    --popover: #18181b;
+    --popover-foreground: #ffffff;
+    --primary: #9333ea;
+    --primary-foreground: #ffffff;
+    --secondary: #27272a;
+    --secondary-foreground: #ffffff;
+    --muted: #27272a;
+    --muted-foreground: #a1a1aa;
+    --accent: #27272a;
+    --accent-foreground: #ffffff;
+    --destructive: #ef4444;
+    --destructive-foreground: #ffffff;
+    --border: #27272a;
+    --input: #27272a;
+    --ring: #9333ea;
+    
+    --sidebar-bg: #09090b;
+    --sidebar-foreground: #e4e4e7;
+    --sidebar-border: #27272a;
+    
+    --editor-bg: #000000;
+    --editor-foreground: #ffffff;
+    --editor-selection: rgba(147, 51, 234, 0.3);
+    --editor-cursor: #ffffff;
+    --editor-active-line: rgba(255, 255, 255, 0.05);
+    
+    --graph-bg: #000000;
+    --graph-node: #9333ea;
+    --graph-node-active: #d8b4fe;
+    --graph-edge: #52525b;
+    --graph-text: #ffffff;
+    
+    --callout-note: rgba(59, 130, 246, 0.1);
+    --callout-warning: rgba(234, 179, 8, 0.1);
+    --callout-tip: rgba(34, 197, 94, 0.1);
+    --callout-danger: rgba(239, 68, 68, 0.1);
+  }
+
+  .light {
+    --background: #ffffff;
+    --foreground: #09090b;
+    --card: #ffffff;
+    --card-foreground: #09090b;
+    --popover: #ffffff;
+    --popover-foreground: #09090b;
+    --primary: #9333ea;
+    --primary-foreground: #ffffff;
+    --secondary: #f4f4f5;
+    --secondary-foreground: #18181b;
+    --muted: #f4f4f5;
+    --muted-foreground: #71717a;
+    --accent: #f4f4f5;
+    --accent-foreground: #18181b;
+    --destructive: #ef4444;
+    --destructive-foreground: #ffffff;
+    --border: #e4e4e7;
+    --input: #e4e4e7;
+    --ring: #9333ea;
+    
+    --sidebar-bg: #f8fafc;
+    --sidebar-foreground: #0f172a;
+    --sidebar-border: #e2e8f0;
+    
+    --editor-bg: #ffffff;
+    --editor-foreground: #09090b;
+    --editor-selection: rgba(147, 51, 234, 0.2);
+    --editor-cursor: #09090b;
+    --editor-active-line: rgba(0, 0, 0, 0.03);
+    
+    --graph-bg: #ffffff;
+    --graph-node: #9333ea;
+    --graph-node-active: #6b21a8;
+    --graph-edge: #cbd5e1;
+    --graph-text: #09090b;
+  }
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  scroll-behavior: smooth;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--muted);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--muted-foreground);
+}
