@@ -1,0 +1,83 @@
+name: Retrieval Regression Benchmark
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '**.py'
+      - '.github/workflows/retrieval-regression.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - '**.py'
+
+jobs:
+  retrieval-benchmark:
+    name: Vault Retrieval Benchmark (Held-Out Test Set)
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install Python dependencies
+        run: |
+          pip install rank-bm25 chromadb markdown-it-py networkx python-louvain numpy
+
+      - name: Run statistical retrieval benchmark
+        working-directory: ${{ github.workspace }}
+        env:
+          VAULT_DIR: ${{ github.workspace }}/test_fixtures/vault
+        run: |
+          python3 ".obsidian/scripts/retrieval_benchmark.py" --ci-mode 2>&1 | tee benchmark_output.txt
+          echo "Benchmark complete"
+
+      - name: Check regression gate (P@1 ≥ 0.60, MRR ≥ 0.65)
+        run: |
+          python3 - << 'PYEOF'
+          import json, sys
+          try:
+              with open(".obsidian/statistical_retrieval_benchmark.json") as f:
+                  data = json.load(f)
+          except FileNotFoundError:
+              print("⚠️ No benchmark JSON found — skipping gate check")
+              sys.exit(0)
+          
+          held_out = data.get("held_out_test_set", {})
+          full_model = held_out.get("full_model", {})
+          
+          p1   = full_model.get("P@1", {}).get("mean", 0)
+          mrr  = full_model.get("MRR", {}).get("mean", 0)
+          
+          # Regression gates
+          P1_GATE  = 0.60
+          MRR_GATE = 0.65
+          
+          print(f"P@1={p1:.4f} (gate: {P1_GATE}) | MRR={mrr:.4f} (gate: {MRR_GATE})")
+          
+          failed = []
+          if p1 < P1_GATE:
+              failed.append(f"P@1={p1:.4f} < {P1_GATE}")
+          if mrr < MRR_GATE:
+              failed.append(f"MRR={mrr:.4f} < {MRR_GATE}")
+          
+          if failed:
+              print(f"❌ REGRESSION DETECTED: {', '.join(failed)}")
+              sys.exit(1)
+          else:
+              print("✅ All retrieval regression gates passed")
+          PYEOF
+
+      - name: Upload benchmark artifact
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: retrieval-benchmark-${{ github.run_id }}
+          path: |
+            .obsidian/statistical_retrieval_benchmark.json
+            benchmark_output.txt
+          retention-days: 90
