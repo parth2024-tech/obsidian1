@@ -69,9 +69,9 @@
   },
   "sprint_focus": "Building the core MVP: CodeMirror 6 editor with wikilinks, file explorer, backlinks panel, graph view, and 3-column workspace layout.",
   "sprint_skills": [
-    "lifecycle/incremental-implementation",
-    "lifecycle/api-and-interface-design",
-    "lifecycle/test-driven-development"
+    "incremental-implementation",
+    "api-and-interface-design",
+    "test-driven-development"
   ],
   "never_do": [
     "Never use useEffect for data fetching — use Server Components or Zustand subscriptions",
@@ -93,12 +93,12 @@
   "agent_skills": {
     "directory": "/home/thor/skills",
     "default_skills": [
-      "lifecycle/using-agent-skills",
-      "lifecycle/context-engineering"
+      "using-agent-skills",
+      "context-engineering"
     ],
     "mandatory_skills": {
-      "api": "lifecycle/api-and-interface-design",
-      "auth": "lifecycle/security-and-hardening"
+      "api": "api-and-interface-design",
+      "auth": "security-and-hardening"
     },
     "session_reporting_preference": true
   }
